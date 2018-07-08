@@ -38,15 +38,19 @@
         "name": "WATCH_PASSWORD",
         "value": "password",
         "description": "Watch User Password"
+    },{
+        "name": "SERVICE_ACCOUNT_NAME",
+        "value": "pg-watcher",
+        "description": "Service Account Name"
     }
     ],
     "objects": [{
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${SERVICE_NAME}",
+            "name": "${SERVICE_ACCOUNT_NAME}",
             "labels": {
-                "name": "${SERVICE_NAME}"
+                "name": "${SERVICE_ACCOUNT_NAME}"
             }
         },
         "spec": {
