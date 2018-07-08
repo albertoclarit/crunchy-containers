@@ -11,7 +11,7 @@
         }
     },
     "parameters": [{
-        "name": "CRUNCHY_WATCH_OPENSHIFT_PROJECT",
+        "name": "PROJECT",
         "value": "default",
         "description": "The project watcher will be watching"
     },{
@@ -23,42 +23,23 @@
         "value": "crunchydata",
         "description": "The image prefix to use"
     }, {
-        "name": "SERVICE_NAME",
-        "description": "The name to use for the watch service",
-        "value": "pgwatch"
+        "name": "PRIMARY_SERVICE",
+        "value": "primary",
+        "description": "Primary Service"
     }, {
-        "name": "SERVICE_ACCOUNT_NAME",
-        "description": "The name of the service account to use",
-        "value": "pg-watcher"
+        "name": "REPLICATION_SERVICE",
+        "value": "replication",
+        "description": "Replication Service"
     }, {
-        "name": "OSE_PROJECT",
-        "description": "The name of the OSE project to use",
-        "value": "jeff-project"
+        "name": "WATCH_USER",
+        "value": "primaryuser",
+        "description": "Watch User"
     }, {
-        "name": "SLEEP_TIME",
-        "description": "The time to sleep for polling the primary",
-        "value": "20"
-    }, {
-        "name": "REPLICA_TO_TRIGGER",
-        "description": "The name of a replica to trigger a failover upon",
-        "value": "thisone"
-    }, {
-        "name": "PRIMARY_TO_WATCH",
-        "description": "The name of a primary service to watch",
-        "value": "pgprimary"
-    }, {
-        "name": "REPLICA_TO_WATCH",
-        "description": "The name of a replica service to watch",
-        "value": "pgreplica"
-    }, {
-        "name": "PRIMARY_USER",
-        "description": "The primary user to watch with",
-        "value": "primaryuser"
-    },{
-        "name": "PRIMARY_PASSWORD",
-        "description": "The primary password to watch with",
-        "value": "password"
-    }],
+        "name": "WATCH_PASSWORD",
+        "value": "password",
+        "description": "Watch User Password"
+    }
+    ],
     "objects": [{
         "kind": "Pod",
         "apiVersion": "v1",
@@ -74,38 +55,35 @@
                 "name": "watch",
                 "image": "${CCP_IMAGE_PREFIX}/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
-                    "name": "OSE_PROJECT",
-                    "value": "${OSE_PROJECT}"
-                }, {
-                    "name": "SLEEP_TIME",
-                    "value": "${SLEEP_TIME}"
-                }, {
-                    "name": "REPLICA_TO_TRIGGER_LABEL",
-                    "value": "${REPLICA_TO_TRIGGER}"
-                }, {
-                    "name": "PG_PRIMARY_SERVICE",
-                    "value": "${PRIMARY_TO_WATCH}"
-                }, {
-                    "name": "PG_REPLICA_SERVICE",
-                    "value": "${REPLICA_TO_WATCH}"
-                }, {
-                    "name": "PG_PRIMARY_PORT",
-                    "value": "5432"
-                }, {
-                    "name": "PG_PRIMARY_USER",
-                    "value": "${PRIMARY_USER}"
-                }, {
-                    "name": "HOME",
-                    "value": "/tmp"
-                }, {
-                    "name": "PG_DATABASE",
-                    "value": "postgres"
+                    "name": "CRUNCHY_WATCH_PLATFORM",
+                    "value": "openshift"
                 },{
                     "name": "CRUNCHY_WATCH_OPENSHIFT_PROJECT",
-                    "value": "${CRUNCHY_WATCH_OPENSHIFT_PROJECT}"
+                    "value": "${PROJECT}"
                 },{
-                    "name": "PRIMARY_PASSWORD",
-                    "value": "${PRIMARY_PASSWORD}"
+                    "name": "CRUNCHY_WATCH_OPENSHIFT_FAILOVER_STRATEGY",
+                    "value": "latest"
+                },{
+                    "name": "CRUNCHY_WATCH_PRIMARY",
+                    "value": "${PRIMARY_SERVICE}"
+                }, {
+                    "name": "CRUNCHY_WATCH_PRIMARY_PORT",
+                    "value": "5432"
+                }, {
+                    "name": "CRUNCHY_WATCH_REPLICA",
+                    "value": "${REPLICATION_SERVICE}"
+                }, {
+                    "name": "CRUNCHY_WATCH_REPLICA_PORT",
+                    "value": "5432"
+                }, {
+                    "name": "CRUNCHY_WATCH_USERNAME",
+                    "value": "${WATCH_USER}"
+                }, {
+                    "name": "CRUNCHY_WATCH_PASSWORD",
+                    "value": "${WATCH_PASSWORD}"
+                }, {
+                    "name": "CRUNCHY_WATCH_DATABASE",
+                    "value": "postgres"
                 }]
             }]
         }
